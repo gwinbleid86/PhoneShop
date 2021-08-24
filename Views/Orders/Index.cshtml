@@ -1,0 +1,60 @@
+@model List<Order>
+
+@{ ViewData["Title"] = "Orders";
+    Layout = "_Layout"; }
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+
+<div>
+    @if (Model.Count == 0)
+    {<p>Заказов еще нет.</p> }
+    else
+    {
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Address
+            </th>
+            <th>
+                ContactPone
+            </th>
+            <th>
+                Phone
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Address)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ContactPone)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Phone.Id)
+    </td>
+    <td>
+        @*<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |*@
+        @*<a asp-page="./Details" asp-route-id="@item.Id">Details</a> |*@
+        @*<a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>*@
+    </td>
+</tr>
+}
+    </tbody>
+</table>}
+</div>
