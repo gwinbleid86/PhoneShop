@@ -19,7 +19,7 @@
                 <select id="companyName" asp-for="Phone.CompanyId">
                     @foreach (var item in @Model.CompanyList)
                     {
-        <option value="@item.Id">@item.Name - @item.Id</option>
+        <option value="@item.Id">@item.Name</option>
 }
                 </select>
             </div>

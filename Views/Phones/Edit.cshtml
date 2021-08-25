@@ -1,4 +1,4 @@
-﻿@model Phone
+﻿@model PhoneAndCompaniesViewModel
 @{
     ViewBag.Title = "Редактирование";
     Layout = "_Layout";
@@ -7,28 +7,28 @@
 <div class="row">
     <div class="col-md-6">
         <form asp-action="Edit" asp-controller="Phones" method="post">
+            <input asp-for="Phone.Id" value="@Model.Phone.Id" hidden>
             <div class="form_row">
                 <label for="">
                     Название
-                    <input asp-for="Name" type="text" value="@Model.Name">
+                    <input asp-for="Phone.Name" type="text" value="@Model.Phone.Name">
                 </label>
             </div>
-            @*<div class="form_row">
-                <label for="">
-                    Бренд
-                    <input asp-for="Brand" type="text" value="@Model.Brand">
-                </label>
-            </div>*@
             <div class="form_row">
                 <label for="">
                     Компания
-                    <input asp-for="CompanyId" type="text" value="@Model.Company.Id">
+                    <select asp-for="Phone.CompanyId">
+                        @foreach (var item in Model.CompanyList)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    </select>
                 </label>
             </div>
             <div class="form_row">
                 <label for="">
                     Стоимость
-                    <input asp-for="Price" type="text" value="@Model.Price">
+                    <input asp-for="Phone.Price" type="text" value="@Model.Phone.Price">
                 </label>
             </div>
 

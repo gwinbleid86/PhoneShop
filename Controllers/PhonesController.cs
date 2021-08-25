@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PhoneShop.Models;
 using PhoneShop.ViewModels;
 
@@ -20,7 +22,8 @@ namespace PhoneShop.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View();
+            List<Phone> phones = _db.Phones.Include(p => p.Company).ToList();
+            return View(phones);
         }
 
         public IActionResult Add()
@@ -50,10 +53,14 @@ namespace PhoneShop.Controllers
         {
             if (id != null)
             {
-                Phone phone = _db.Phones.FirstOrDefault(p => p.Id == id);
-                if (phone != null)
+                PhoneAndCompaniesViewModel phoneVM = new PhoneAndCompaniesViewModel()
                 {
-                    return View(phone);
+                    Phone = _db.Phones.Include(c => c.Company).FirstOrDefault(p => p.Id == id),
+                    CompanyList = _db.Companies.ToList()
+                };
+                if (phoneVM.Phone != null)
+                {
+                    return View(phoneVM);
                 }
             }
             return NotFound();
