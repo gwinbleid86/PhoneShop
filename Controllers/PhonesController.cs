@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PhoneShop.Models;
@@ -22,7 +23,7 @@ namespace PhoneShop.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            List<Phone> phones = _db.Phones.Include(p => p.Company).ToList();
+            List<Phone> phones = _db.Phones.Include(p => p.Brand).ToList();
             return View(phones);
         }
 
@@ -30,8 +31,7 @@ namespace PhoneShop.Controllers
         {
             var phoneAndCompanies = new PhoneAndCompaniesViewModel
             {
-                //Phone = new Phone(),
-                CompanyList = _db.Companies.ToList()
+                BrandList = _db.Brands.ToList()
             };
             return View(phoneAndCompanies);
         }
@@ -39,24 +39,28 @@ namespace PhoneShop.Controllers
         [HttpPost]
         public IActionResult Add(PhoneAndCompaniesViewModel phoneVM)
         {
-            if (phoneVM != null)
+
+            if (ModelState.IsValid)
             {
-                _db.Phones.Add(phoneVM.Phone);
-                _db.SaveChanges();
+                if (phoneVM != null)
+                {
+                    _db.Phones.Add(phoneVM.Phone);
+                    _db.SaveChanges();
+                }
+                return RedirectToAction("Index");
             }
-
-
-            return RedirectToAction("index");
+            return RedirectToAction("Add");
         }
 
+        // Edit actions
         public IActionResult Edit(int? id)
         {
             if (id != null)
             {
                 PhoneAndCompaniesViewModel phoneVM = new PhoneAndCompaniesViewModel()
                 {
-                    Phone = _db.Phones.Include(c => c.Company).FirstOrDefault(p => p.Id == id),
-                    CompanyList = _db.Companies.ToList()
+                    Phone = _db.Phones.Include(c => c.Brand).FirstOrDefault(p => p.Id == id),
+                    BrandList = _db.Brands.ToList()
                 };
                 if (phoneVM.Phone != null)
                 {
@@ -72,10 +76,41 @@ namespace PhoneShop.Controllers
             if (phone != null)
             {
                 _db.Phones.Update(phone);
-                _db.SaveChanges();
+                _db.SaveChangesAsync();
             }
 
             return RedirectToAction("Index");
+        }
+
+
+
+        // Delete actions
+        [HttpGet]
+        [ActionName("Delete")]
+        public async Task<IActionResult> ConfirmDelete(int? id)
+        {
+            if (id != null)
+            {
+                Phone phone = await _db.Phones.FirstOrDefaultAsync(e => e.Id == id);
+                if (phone != null)
+                {
+                    return View(phone);
+                }
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id != null)
+            {
+                Phone phone = new Phone { Id = id.Value };
+                _db.Entry(phone).State = EntityState.Deleted;
+                await _db.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            return NotFound();
         }
     }
 }

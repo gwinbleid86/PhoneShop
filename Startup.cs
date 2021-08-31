@@ -23,7 +23,7 @@ namespace PhoneShop
             services.AddControllersWithViews();
 
             string connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<ApplicationContext>(options => options.UseSqlite(connection));
+            services.AddDbContext<ApplicationContext>(options => options.UseNpgsql(connection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,7 +47,7 @@ namespace PhoneShop
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Phones}/{action=Index}/{id?}");
             });
         }
     }

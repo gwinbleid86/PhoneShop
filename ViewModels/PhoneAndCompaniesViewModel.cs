@@ -7,6 +7,6 @@ namespace PhoneShop.ViewModels
     public class PhoneAndCompaniesViewModel
     {
         public Phone Phone { get; set; }
-        public IEnumerable<Company> CompanyList { get; set; }
+        public IEnumerable<Brand> BrandList { get; set; }
     }
 }

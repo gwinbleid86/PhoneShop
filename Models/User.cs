@@ -1,17 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-
+﻿using System;
 namespace PhoneShop.Models
 {
-    public class Phone
+    public class User
     {
         public int Id { get; set; }
-        [Required]
         public string Name { get; set; }
+        public int Age { get; set; }
 
-        [Range(100, 70000)]
-        public int Price { get; set; }
-
-        [Required]
         public int BrandId { get; set; }
         public Brand Brand { get; set; }
     }

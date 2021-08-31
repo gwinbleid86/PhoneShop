@@ -24,12 +24,13 @@ else
 <tr>
     <td>@phone.Id</td>
     <td>@phone.Name</td>
-    <td>@phone.Company.Name</td>
+    <td>@phone.Brand.Name</td>
     <td>@phone.Price</td>
 
     <td>
-        <a asp-action="Create" asp-controller="Orders" asp-route-id="@phone.Id">Заказать</a> |
-        <a asp-action="Edit" asp-controller="Phones" asp-route-id="@phone.Id">Edit</a>
+        <a asp-action="Create" asp-controller="Orders" asp-route-id="@phone.Id">Заказать</a> | 
+        <a asp-action="Edit" asp-controller="Phones" asp-route-id="@phone.Id">Edit</a> | 
+        <a class="btn btn-danger" asp-action="Delete" asp-controller="Phones" asp-route-id="@phone.Id">Delete</a>
     </td>
 </tr>
 }

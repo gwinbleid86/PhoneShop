@@ -3,36 +3,22 @@
     ViewBag.Title = "Редактирование";
     Layout = "_Layout";
 }
+
 <h2>@ViewBag.Title</h2>
 <div class="row">
     <div class="col-md-6">
         <form asp-action="Edit" asp-controller="Phones" method="post">
             <input asp-for="Phone.Id" value="@Model.Phone.Id" hidden>
-            <div class="form_row">
-                <label for="">
-                    Название
-                    <input asp-for="Phone.Name" type="text" value="@Model.Phone.Name">
-                </label>
-            </div>
-            <div class="form_row">
-                <label for="">
-                    Компания
-                    <select asp-for="Phone.CompanyId">
-                        @foreach (var item in Model.CompanyList)
-                        {
-                            <option value="@item.Id">@item.Name</option>
-                        }
-                    </select>
-                </label>
-            </div>
-            <div class="form_row">
-                <label for="">
-                    Стоимость
-                    <input asp-for="Phone.Price" type="text" value="@Model.Phone.Price">
-                </label>
-            </div>
+
+            @{
+                await Html.RenderPartialAsync("PartialViews/_PhoneFormPartial");
+            }
 
             <button type="submit"> Изменить </button>
         </form>
     </div>
 </div>
+
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}

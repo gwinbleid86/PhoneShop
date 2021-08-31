@@ -1,0 +1,29 @@
+@model PhoneAndCompaniesViewModel
+
+<div asp-validation-summary="All"></div>
+<div class="form_row">
+    <label>
+        Название
+        <input asp-for="Phone.Name" type="text" value="@Model.Phone.Name">
+        <span asp-validation-for="Phone.Name"></span>
+    </label>
+</div>
+<div class="form_row">
+    <label>
+        Компания
+        <select asp-for="Phone.BrandId">
+            @foreach (var item in Model.BrandList)
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        </select>
+    </label>
+</div>
+<div class="form_row">
+    <label>
+        Стоимость
+        <input asp-for="Phone.Price" type="text" value="@Model.Phone.Price">
+        <span asp-validation-for="Phone.Price"></span>
+    </label>
+</div>
+

@@ -1,35 +1,24 @@
 @model PhoneAndCompaniesViewModel
 @{ ViewData["Title"] = "Add new phone";
-    Layout = "_Layout"; }
+                Layout = "_Layout"; }
 
 <h2>Заполните форму для добавления устройства</h2>
 <div class="row">
     <div class="phone_add_form col-md-6">
         <form asp-action="Add" method="post">
-            <div class="form_row">
-                <label for="">
-                    Наименование
-                    <input asp-for="Phone.Name" type="text">
-                </label>
-            </div>
-            <div class="form_row">
-                <label for="companyName">
-                    Company
-                </label>
-                <select id="companyName" asp-for="Phone.CompanyId">
-                    @foreach (var item in @Model.CompanyList)
-                    {
-        <option value="@item.Id">@item.Name</option>
-}
-                </select>
-            </div>
-            <div class="form_row">
-                <label for="">
-                    Стоимость
-                    <input asp-for="Phone.Price" type="text">
-                </label>
-            </div>
+
+            @{ await Html.RenderPartialAsync("PartialViews/_PhoneFormPartial", new PhoneAndCompaniesViewModel()
+                            {
+                                Phone = new Phone(),
+                                BrandList = Model.BrandList
+                            }); }
+
             <button type="submit">Создать</button>
         </form>
     </div>
 </div>
+
+
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}

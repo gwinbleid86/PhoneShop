@@ -7,11 +7,11 @@ using PhoneShop.Models;
 
 namespace PhoneShop.Controllers
 {
-    public class CompaniesController : Controller
+    public class BrandsController : Controller
     {
         private ApplicationContext _context;
 
-        public CompaniesController(ApplicationContext context)
+        public BrandsController(ApplicationContext context)
         {
             _context = context;
         }
@@ -19,7 +19,7 @@ namespace PhoneShop.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            List<Company> companies = _context.Companies.ToList();
+            List<Brand> companies = _context.Brands.ToList();
             return View(companies);
         }
 
@@ -29,7 +29,7 @@ namespace PhoneShop.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Company company)
+        public IActionResult Create(Brand company)
         {
             if (company != null)
             {
