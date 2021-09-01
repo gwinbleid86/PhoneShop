@@ -1,6 +1,6 @@
 @model PhoneAndCompaniesViewModel
 @{ ViewData["Title"] = "Add new phone";
-                Layout = "_Layout"; }
+    Layout = "_Layout"; }
 
 <h2>Заполните форму для добавления устройства</h2>
 <div class="row">
@@ -8,17 +8,16 @@
         <form asp-action="Add" method="post">
 
             @{ await Html.RenderPartialAsync("PartialViews/_PhoneFormPartial", new PhoneAndCompaniesViewModel()
-                            {
-                                Phone = new Phone(),
-                                BrandList = Model.BrandList
-                            }); }
+                {
+                    Phone = new Phone(),
+                    BrandList = Model.BrandList
+                }); }
 
             <button type="submit">Создать</button>
         </form>
     </div>
 </div>
 
-
-@{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+@section scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

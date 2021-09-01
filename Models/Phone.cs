@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PhoneShop.Models
 {
@@ -14,5 +15,12 @@ namespace PhoneShop.Models
         [Required]
         public int BrandId { get; set; }
         public Brand Brand { get; set; }
+
+        public List<Comment> Comments { get; set; }
+
+        public Phone()
+        {
+            Comments = new List<Comment>();
+        }
     }
 }

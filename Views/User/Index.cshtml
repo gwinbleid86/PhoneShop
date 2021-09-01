@@ -1,39 +1,48 @@
-﻿@{
+﻿@model UsersListViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
-@model IEnumerable<User>
 
-<h1>Список пользователей</h1>
+<h2>Каталог пользователей</h2>
 
-<table class="table">
+<form method="get">
+    <div class="form-inline form-group">
+        <label class="control-label">Имя: </label>
+        @Html.TextBox("name", Model.Name, htmlAttributes: new { @class = "form-control" })
+
+        <label class="control-label">Бренд: </label>
+        @Html.DropDownList("brand", Model.Brands as SelectList,
+                htmlAttributes: new { @class = "form-control" })
+
+        <input type="submit" value="Фильтр" class="btn btn-default" />
+    </div>
+</form>
+
+<table class="table table-striped">
     <tr>
         <th>
-            <a asp-action="Index" asp-route-sortOrder="@ViewBag.NameSort">
-                Имя
-            </a>
+            <a asp-action="Index" asp-route-sortOrder="@ViewBag.NameSort">Имя</a>
         </th>
         <th>
-            <a asp-action="Index" asp-route-sortOrder="@ViewBag.AgeSort">
-                Возраст
-            </a>
+            <a asp-action="Index" asp-route-sortOrder="@ViewBag.AgeSort">Возраст</a>
         </th>
         <th>
-            <a asp-action="Index" asp-route-sortOrder="@ViewBag.BrandSort">
-                Компания
-            </a>
-        </th>
+            <a asp-action="Index" asp-route-sortOrder="@ViewBag.BrandSort">Компания</a>
+</th>
     </tr>
-    @foreach (var item in Model)
+
+    @foreach (var item in Model.Users)
     {
         <tr>
             <td>
-                @item.Name
+                @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @item.Age
+                @Html.DisplayFor(modelItem => item.Age)
             </td>
             <td>
-                @item.Brand.Name
+                @Html.DisplayFor(modelItem => item.Brand.Name)
             </td>
         </tr>
     }

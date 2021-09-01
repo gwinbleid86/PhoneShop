@@ -8,5 +8,6 @@ namespace PhoneShop.ViewModels
     {
         public Phone Phone { get; set; }
         public IEnumerable<Brand> BrandList { get; set; }
+        public IEnumerable<Comment> Comments { get; set; }
     }
 }

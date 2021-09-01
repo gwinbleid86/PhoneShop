@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PhoneShop.enums;
 using PhoneShop.Models;
+using PhoneShop.ViewModels;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,7 +23,7 @@ namespace PhoneShop.Controllers
         }
 
         // GET: /<controller>/
-        public async Task<IActionResult> Index(SortState sortOrder = SortState.NameAsc)
+        public async Task<IActionResult> Index(int brandId, string name, SortState sortOrder = SortState.NameAsc)
         {
             IQueryable<User> users = _context.Users.Include(e => e.Brand);
             ViewBag.NameSort = sortOrder == SortState.NameAsc ? SortState.NameDesc : SortState.NameAsc;
@@ -50,7 +52,25 @@ namespace PhoneShop.Controllers
                     break;
             }
 
-            return View(await users.AsNoTracking().ToListAsync());
+            if (brandId != 0)
+            {
+                users = users.Where(e => e.BrandId == brandId);
+            }
+            if (!string.IsNullOrEmpty(name))
+            {
+                users = users.Where(e => e.Name.Contains(name));
+            }
+            List<Brand> brands = _context.Brands.ToList();
+            brands.Insert(0, new Brand { Name = "All" });
+
+            UsersListViewModel viewModel = new UsersListViewModel
+            {
+                Users = await users.AsNoTracking().ToListAsync(),
+                Brands = new SelectList(brands, "Id", "Name"),
+                Name = name
+            };
+
+            return View(viewModel);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace PhoneShop.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            List<Phone> phones = _db.Phones.Include(p => p.Brand).ToList();
+            List<Phone> phones = _db.Phones.Include(p => p.Brand).Include(c => c.Comments).ToList();
             return View(phones);
         }
 
@@ -60,7 +60,8 @@ namespace PhoneShop.Controllers
                 PhoneAndCompaniesViewModel phoneVM = new PhoneAndCompaniesViewModel()
                 {
                     Phone = _db.Phones.Include(c => c.Brand).FirstOrDefault(p => p.Id == id),
-                    BrandList = _db.Brands.ToList()
+                    BrandList = _db.Brands.ToList(),
+                    Comments = _db.Comments.Where(e => e.PhoneId == id).ToList()
                 };
                 if (phoneVM.Phone != null)
                 {

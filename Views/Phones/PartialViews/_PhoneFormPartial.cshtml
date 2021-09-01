@@ -5,13 +5,14 @@
     <label>
         Название
         <input asp-for="Phone.Name" type="text" value="@Model.Phone.Name">
-        <span asp-validation-for="Phone.Name"></span>
+        <span asp-validation-for="Phone.Name" class="text-danger"></span>
     </label>
 </div>
 <div class="form_row">
     <label>
         Компания
         <select asp-for="Phone.BrandId">
+            <option disabled selected>Выберите компанию</option>
             @foreach (var item in Model.BrandList)
             {
                 <option value="@item.Id">@item.Name</option>
@@ -23,7 +24,7 @@
     <label>
         Стоимость
         <input asp-for="Phone.Price" type="text" value="@Model.Phone.Price">
-        <span asp-validation-for="Phone.Price"></span>
+        <span asp-validation-for="Phone.Price" class="text-danger"></span>
     </label>
 </div>
 

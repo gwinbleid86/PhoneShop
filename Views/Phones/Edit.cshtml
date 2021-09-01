@@ -19,6 +19,43 @@
     </div>
 </div>
 
-@{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+<hr>
+
+<div>
+    @foreach (var item in Model.Comments)
+    {
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">@item.Author</h5>
+                <div class="card-subtitle mb-2 text-muted">
+                    <div class="rating-mini">
+                        @for (int i = 0; i < 5; i++)
+                        {
+                            @if (i < item.Rating)
+                            {
+                                <span class="active"></span>
+                            }
+                            else
+                            {
+                                <span></span>
+                            }
+                        }
+                        <span></span>
+                    </div>
+                </div>
+                <hr>
+                <p class="card-text">@item.CommentText</p>
+            </div>
+        </div>
+    }
+</div>
+
+<hr>
+
+<div>
+    <a asp-action="Add" asp-controller="Comment" asp-route-phoneId="@Model.Phone.Id" class="btn btn-outline-primary">Add new comment</a>
+</div>
+
+@section scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

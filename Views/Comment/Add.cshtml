@@ -1,0 +1,37 @@
+﻿@model Comment
+
+@{
+    ViewBag.Title = "Add comment";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <form asp-action="Add" asp-controller="Comment" method="post">
+        <input asp-for="PhoneId" type="number" value="@Model.PhoneId" hidden>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" asp-for="Author">
+        </div>
+        <div class="form-group">
+            <label for="comment">Example textarea</label>
+            <textarea class="form-control" id="comment" rows="3" asp-for="CommentText"></textarea>
+        </div>
+        <div class="form-group">
+            <div class="rating-area">
+                <input asp-for="Rating" type="radio" id="star-5" value="5">
+                <label for="star-5" title="Оценка «5»"></label>
+                <input asp-for="Rating" type="radio" id="star-4" value="4">
+                <label for="star-4" title="Оценка «4»"></label>
+                <input asp-for="Rating" type="radio" id="star-3" value="3">
+                <label for="star-3" title="Оценка «3»"></label>
+                <input asp-for="Rating" type="radio" id="star-2" value="2">
+                <label for="star-2" title="Оценка «2»"></label>
+                <input asp-for="Rating" type="radio" id="star-1" value="1">
+                <label for="star-1" title="Оценка «1»"></label>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Send</button>
+    </form>
+</div>

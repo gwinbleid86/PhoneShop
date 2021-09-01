@@ -17,6 +17,7 @@ else
         <th>Наименование</th>
         <th>Компания</th>
         <th>Стоимость</th>
+        <th>Отзывы</th>
         <th></th>
     </tr>
     @foreach (var phone in @Model)
@@ -26,7 +27,32 @@ else
     <td>@phone.Name</td>
     <td>@phone.Brand.Name</td>
     <td>@phone.Price</td>
-
+    <td>
+    @if (phone.Comments.Count > 0)
+    {
+        <div class="rating-mini">
+            @{var rate = Convert.ToInt32(@phone.Comments.Select(c => c.Rating).Average());}
+            @for (int i = 0; i < 5; i++)
+            {
+                @if (i < rate)
+                {
+                    <span class="active"></span>
+                }
+                else {
+                <span></span>
+                }
+            }
+        </div>
+    }else {
+        <div class="rating-mini">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    }
+    </td>
     <td>
         <a asp-action="Create" asp-controller="Orders" asp-route-id="@phone.Id">Заказать</a> | 
         <a asp-action="Edit" asp-controller="Phones" asp-route-id="@phone.Id">Edit</a> | 

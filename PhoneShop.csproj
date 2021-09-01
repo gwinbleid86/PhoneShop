@@ -31,10 +31,12 @@
     <None Remove="Npgsql.EntityFrameworkCore.PostgreSQL" />
     <None Remove="enums\" />
     <None Remove="Views\User\" />
+    <None Remove="Views\Comment\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Phones\PartialViews\" />
     <Folder Include="enums\" />
     <Folder Include="Views\User\" />
+    <Folder Include="Views\Comment\" />
   </ItemGroup>
 </Project>
