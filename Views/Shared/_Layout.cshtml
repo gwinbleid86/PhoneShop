@@ -32,6 +32,25 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Phones" asp-action="Search">Search</a>
+                        </li>
+                        <li class="nav-item ml-auto">
+                            <div class="login_group row">
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <p>@User.Identity.Name</p>
+                                    <form method="post" asp-controller="Account" asp-action="Logout">
+                                        <input type="submit" value="Logoff"/>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Account" asp-action="Login">Вход</a>
+                                    <a asp-controller="Account" asp-action="Register">Регистрация</a>
+                                }
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>

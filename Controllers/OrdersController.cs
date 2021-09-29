@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PhoneShop.Models;
@@ -8,6 +9,7 @@ using PhoneShop.Models;
 
 namespace _49.Controllers
 {
+    [Authorize]
     public class OrdersController : Controller
     {
         private ApplicationContext _context;
@@ -24,7 +26,7 @@ namespace _49.Controllers
             return View(orders);
         }
 
-        public IActionResult Create(int id)
+        public IActionResult Create(string id)
         {
             Phone phone = _context.Phones.FirstOrDefault(p => p.Id == id);
             return View(new Order { Phone = phone });

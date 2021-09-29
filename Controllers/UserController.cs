@@ -25,7 +25,7 @@ namespace PhoneShop.Controllers
         // GET: /<controller>/
         public async Task<IActionResult> Index(int brandId, string name, SortState sortOrder = SortState.NameAsc)
         {
-            IQueryable<User> users = _context.Users.Include(e => e.Brand);
+            /*IQueryable<User> users = _context.Users.Include(e => e.Brand);
             ViewBag.NameSort = sortOrder == SortState.NameAsc ? SortState.NameDesc : SortState.NameAsc;
             ViewBag.AgeSort = sortOrder == SortState.AgeAsc ? SortState.AgeDesc : SortState.AgeAsc;
             ViewBag.BrandSort = sortOrder == SortState.BrandAsc ? SortState.BrandDesc : SortState.BrandAsc;
@@ -70,7 +70,8 @@ namespace PhoneShop.Controllers
                 Name = name
             };
 
-            return View(viewModel);
+            return View(viewModel);*/
+            return View();
         }
     }
 }

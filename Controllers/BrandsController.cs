@@ -33,7 +33,7 @@ namespace PhoneShop.Controllers
         {
             if (company != null)
             {
-                _context.Add(company);
+                _context.Brands.Add(company);
                 _context.SaveChanges();
             }
 

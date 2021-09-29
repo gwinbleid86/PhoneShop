@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PhoneShop.Models
 {
     public class Phone
     {
-        public int Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string Id { get; set; }
         [Required]
         public string Name { get; set; }
 
@@ -13,7 +15,7 @@ namespace PhoneShop.Models
         public int Price { get; set; }
 
         [Required]
-        public int BrandId { get; set; }
+        public string BrandId { get; set; }
         public Brand Brand { get; set; }
 
         public List<Comment> Comments { get; set; }

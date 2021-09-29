@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Поиск телефонов";
+    Layout = "_Layout";
+}
+
+<input tupe="text" name="searchKey" id="search" />
+<input type="button" id="submit" value="Search" />
+
+<div id="results"></div>
+
+
+@section Scripts{
+    <script>
+        $(function () {
+            $('#submit').on('click', function (event) {
+                event.preventDefault()
+                let searchKey = $('#search').val()
+                searchKey = encodeURIComponent(searchKey)
+
+                $('#results').load('@Url.Action("SearchResult", "Phones")?keyWord=' + searchKey)
+            })
+        })
+    </script>
+}
+
+

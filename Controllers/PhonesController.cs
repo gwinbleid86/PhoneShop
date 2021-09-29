@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PhoneShop.Models;
@@ -21,12 +22,24 @@ namespace PhoneShop.Controllers
 
 
         // GET: /<controller>/
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            List<Phone> phones = _db.Phones.Include(p => p.Brand).Include(c => c.Comments).ToList();
-            return View(phones);
+            int pageSize = 3;
+            IQueryable<Phone> source = _db.Phones.Include(p => p.Brand).Include(c => c.Comments);
+            var count = await source.CountAsync();
+            var items = await source.Skip((page - 1)*pageSize).Take(pageSize).ToListAsync();
+            PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+
+            PhoneIndexViewModel model = new PhoneIndexViewModel
+            {
+                PageViewModel = pageViewModel,
+                Phones = items
+            };
+
+            return View(model);
         }
 
+        [Authorize(Roles = "admin")]
         public IActionResult Add()
         {
             var phoneAndCompanies = new PhoneAndCompaniesViewModel
@@ -36,6 +49,7 @@ namespace PhoneShop.Controllers
             return View(phoneAndCompanies);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public IActionResult Add(PhoneAndCompaniesViewModel phoneVM)
         {
@@ -53,7 +67,7 @@ namespace PhoneShop.Controllers
         }
 
         // Edit actions
-        public IActionResult Edit(int? id)
+        public IActionResult Edit(string id)
         {
             if (id != null)
             {
@@ -88,7 +102,7 @@ namespace PhoneShop.Controllers
         // Delete actions
         [HttpGet]
         [ActionName("Delete")]
-        public async Task<IActionResult> ConfirmDelete(int? id)
+        public async Task<IActionResult> ConfirmDelete(string id)
         {
             if (id != null)
             {
@@ -102,16 +116,29 @@ namespace PhoneShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id != null)
             {
-                Phone phone = new Phone { Id = id.Value };
+                Phone phone = new Phone { Id = id };
                 _db.Entry(phone).State = EntityState.Deleted;
                 await _db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return NotFound();
+        }
+
+        public IActionResult Search()
+        {
+            return View();
+        }
+
+        public IActionResult SearchResult(string keyWord)
+        {
+            List<Phone> phones = _db.Phones.Include(e => e.Brand).Where(e =>
+                e.Name.Contains(keyWord) ||
+                e.Brand.Name.Contains(keyWord)).ToList();
+            return PartialView("PartialViews/_PhonesPartial", phones);
         }
     }
 }

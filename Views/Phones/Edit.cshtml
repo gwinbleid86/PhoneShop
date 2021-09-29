@@ -21,7 +21,7 @@
 
 <hr>
 
-<div>
+<div id="ext_comments">
     @foreach (var item in Model.Comments)
     {
         <div class="card" style="width: 18rem;">
@@ -40,11 +40,10 @@
                                 <span></span>
                             }
                         }
-                        <span></span>
                     </div>
                 </div>
                 <hr>
-                <p class="card-text">@item.CommentText</p>
+                <p id="commentText" class="card-text">@item.CommentText</p>
             </div>
         </div>
     }
@@ -53,9 +52,71 @@
 <hr>
 
 <div>
-    <a asp-action="Add" asp-controller="Comment" asp-route-phoneId="@Model.Phone.Id" class="btn btn-outline-primary">Add new comment</a>
+    <a id="show_comment" style="cursor:pointer">Add new comment</a>
+    <div id="comment_div" style="display:none">
+        <input type="text" id="author" name="author" placeholder="Author" />
+        <textarea id="comment_text"></textarea>
+        <div class="form-group">
+            <div id="rating" class="rating-area">
+                <input type="radio" id="star-5" value="5">
+                <label for="star-5" title="Оценка «5»"></label>
+                <input type="radio" id="star-4" value="4">
+                <label for="star-4" title="Оценка «4»"></label>
+                <input type="radio" id="star-3" value="3">
+                <label for="star-3" title="Оценка «3»"></label>
+                <input type="radio" id="star-2" value="2">
+                <label for="star-2" title="Оценка «2»"></label>
+                <input type="radio" id="star-1" value="1">
+                <label for="star-1" title="Оценка «1»"></label>
+            </div>
+        </div>
+        <input type="button" id="comment_send" value="Send" />
+    </div>
 </div>
 
 @section scripts{
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+<script>
+    let htmlComment = '<div class="card" style="width: 18rem;">' +
+        '<div class="card-body">' +
+        '<h5 id="ext_comment_author" class="card-title"></h5>' +
+        '<div class="card-subtitle mb-2 text-muted"></div>' +
+        '<div id="ext_rating" class="rating-mini"></div>' +
+        '<hr>' +
+        '<p id="ext_comment_text" class="card-text"></p>' +
+        '</div></div>'
+
+
+    $('#show_comment').on('click', () => $('#comment_div').show())
+
+    $('#comment_send').on('click', () => {
+        $.post('@Url.Action("Add", "Comment")',
+            {
+                phoneId: '@Model.Phone.Id',
+                author: $('#author').val(),
+                commentText: $('#comment_text').val(),
+                rating: $('#rating input:checked').val()
+            },
+            function (response) {
+                console.log(response)
+                $('#ext_comments').append(htmlComment)
+                $('#ext_comment_author').text(response.comment.author)
+                $('#ext_comment_text').text(response.comment.commentText)
+                drawRating(response.comment.rating)
+            }
+        )
+    })
+
+    let drawRating = function (rating) {
+        for (let i = 0; i < 5; i++) {
+            if (i < rating) {
+                $('#ext_rating').append('<span class="active"></span>')
+            }
+            else {
+                $('#ext_rating').append('<span></span>')
+            }
+        }
+    }
+</script>
 }
