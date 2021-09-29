@@ -70,15 +70,4 @@ namespace PhoneShop.Controllers
             return Json(new { comment });
         }
     }
-    public class CommentJson
-    {
-        [JsonPropertyName("phoneId")]
-        public string PhoneId { get; set; }
-        [JsonPropertyName("author")]
-        public string Author { get; set; }
-        [JsonPropertyName("commentText")]
-        public string CommentText { get; set; }
-        [JsonPropertyName("rating")]
-        public int Rating { get; set; }
-    }
 }
