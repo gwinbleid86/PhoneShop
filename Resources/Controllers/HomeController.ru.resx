@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+<data name="Header" xml:space="preserve">
+    <value>Добро пожаловать</value>
+    <comment>Заголовок на главной странице</comment>
+</data>
+<data name="Message" xml:space="preserve">
+    <value>Привет мир!</value>
+    <comment>Текст на главной странице</comment>
+</data>
+</root>

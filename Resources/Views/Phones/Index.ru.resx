@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+    <data name="Header" xml:space="preserve">
+        <value>Мобильные телефоны</value>
+    </data>
+    <data name="AddLink" xml:space="preserve">
+        <value>Добавить смартфон</value>
+    </data>
+</root>

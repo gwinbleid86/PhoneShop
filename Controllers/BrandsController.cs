@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using PhoneShop.Interfaces;
 using PhoneShop.Models;
+using PhoneShop.Services;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -9,18 +12,17 @@ namespace PhoneShop.Controllers
 {
     public class BrandsController : Controller
     {
-        private ApplicationContext _context;
+        private readonly IBrandsService service;
 
-        public BrandsController(ApplicationContext context)
+        public BrandsController(IBrandsService service)
         {
-            _context = context;
+            this.service = service;
         }
 
         // GET: /<controller>/
         public IActionResult Index()
         {
-            List<Brand> companies = _context.Brands.ToList();
-            return View(companies);
+            return View(service.GetAll().ToList());
         }
 
         public IActionResult Create()
@@ -29,12 +31,11 @@ namespace PhoneShop.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Brand company)
+        public async Task<IActionResult> Create(Brand company)
         {
             if (company != null)
             {
-                _context.Brands.Add(company);
-                _context.SaveChanges();
+                await service.Create(company);
             }
 
             return RedirectToAction("Index");

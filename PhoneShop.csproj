@@ -44,6 +44,12 @@
     <None Remove="Views\Account\" />
     <None Remove="utils\" />
     <None Remove="Newtonsoft.Json" />
+    <None Remove="Resources\" />
+    <None Remove="Resources\Controller\" />
+    <None Remove="Resources\Views\" />
+    <None Remove="Resources\Views\Phones\" />
+    <None Remove="Services\" />
+    <None Remove="Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Phones\PartialViews\" />
@@ -52,5 +58,25 @@
     <Folder Include="Views\Comment\" />
     <Folder Include="Views\Account\" />
     <Folder Include="utils\" />
+    <Folder Include="Resources\" />
+    <Folder Include="Resources\Controllers\" />
+    <Folder Include="Resources\Views\" />
+    <Folder Include="Resources\Views\Phones\" />
+    <Folder Include="Services\" />
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Controller\HomeController.en2.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>HomeController.en.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Resources\Controller\HomeController.en2.Designer.cs">
+      <DependentUpon>HomeController.en.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Controller\HomeController.en.Designer.cs">
+      <DependentUpon>HomeController.en.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

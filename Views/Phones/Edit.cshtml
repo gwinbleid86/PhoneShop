@@ -21,33 +21,9 @@
 
 <hr>
 
-<div id="ext_comments">
-    @foreach (var item in Model.Comments)
-    {
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">@item.Author</h5>
-                <div class="card-subtitle mb-2 text-muted">
-                    <div class="rating-mini">
-                        @for (int i = 0; i < 5; i++)
-                        {
-                            @if (i < item.Rating)
-                            {
-                                <span class="active"></span>
-                            }
-                            else
-                            {
-                                <span></span>
-                            }
-                        }
-                    </div>
-                </div>
-                <hr>
-                <p id="commentText" class="card-text">@item.CommentText</p>
-            </div>
-        </div>
-    }
-</div>
+<div class="paging"></div>
+<div id="ext_comments"></div>
+<div class="paging"></div>
 
 <hr>
 
@@ -74,18 +50,79 @@
     </div>
 </div>
 
+
 @section scripts{
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 
 <script>
-    let htmlComment = '<div class="card" style="width: 18rem;">' +
+    $(function(){
+        getComments('@Model.Phone.Id',1)
+    })
+
+    let itemsPerPage = 5
+
+    let getComments = function (phoneId, curPage) {
+        $.get('@Url.Action("AllComments", "Comment")', {
+            'phoneId': phoneId,
+            'curPage': curPage,
+            'itemsPerPage': itemsPerPage
+        }, function (response) {
+                console.log(response)
+                createPagingButtons(response.commentPageViewModel.maxPage)
+                $('.page_' + response.commentPageViewModel.curPage).attr('class', 'page-item active')
+
+                fillComments(response.commentPageViewModel.comments)
+        })
+    }
+
+    let fillComments = function (comments) {
+        $('#ext_comments').empty()
+        for (let i = 0; i < comments.length; i++) {
+            let id = 'comment_' + (i+1)
+            $('#ext_comments').append(htmlComment)
+            $('#ext_comments .card').last().attr('id', id)
+            $('#'+id+' .ext_comment_author').text(comments[i].author)
+            $('#' +id+' .ext_comment_text').text(comments[i].commentText)
+            drawRating(comments[i].rating, id)
+        }
+    }
+
+    let pagination = '<nav">'+
+        '<ul class="pagination" >'+
+         '   <li class="page-item disabled">'+
+          '      <span class="page-link" tabindex="-1" aria-disabled="true">Previous</span>'+
+           ' </li>'+
+            '<li class="next page-item">'+
+             '   <span class="page-link" >Next</span>'+
+            '</li>'+
+        '</ul >'+
+    '</nav >'
+    let createPagingButtons = function (maxPage) {
+        $('.paging').empty()
+        if (maxPage > 1) {
+
+        let button = ''
+        for (let i = 1; i <= maxPage; i++) {
+            button += '<li class="page_' + i +' page-item"><span class="page-link" onClick="switchPage('+i+')">'+i+'</span></li>'
+        }
+        $('.paging').append(pagination)
+            $('.next').before(button)
+        }
+    }
+
+    let switchPage = function (num) {
+        getComments('@Model.Phone.Id', num)
+    }
+
+    let htmlComment = '<div id="ext_comments">'+
+        '<div class="card" style = "width: 18rem;" > ' +
         '<div class="card-body">' +
-        '<h5 id="ext_comment_author" class="card-title"></h5>' +
+        '<h5 class="ext_comment_author card-title"></h5>' +
         '<div class="card-subtitle mb-2 text-muted"></div>' +
-        '<div id="ext_rating" class="rating-mini"></div>' +
+        '<div class="ext_rating rating-mini"></div>' +
         '<hr>' +
-        '<p id="ext_comment_text" class="card-text"></p>' +
-        '</div></div>'
+        '<p class="ext_comment_text card-text"></p>' +
+        '</div></div></div>'
 
 
     $('#show_comment').on('click', () => $('#comment_div').show())
@@ -99,22 +136,24 @@
                 rating: $('#rating input:checked').val()
             },
             function (response) {
-                console.log(response)
                 $('#ext_comments').append(htmlComment)
-                $('#ext_comment_author').text(response.comment.author)
-                $('#ext_comment_text').text(response.comment.commentText)
-                drawRating(response.comment.rating)
+                let commentCount = $('#ext_comments .card').length + 1
+
+                $('#ext_comments .card').last().attr('id', commentCount)
+                $('#' + commentCount+' .ext_comment_author').text(response.comment.author)
+                $('#' + commentCount +' .ext_comment_text').text(response.comment.commentText)
+                drawRating(response.comment.rating, commentCount)
             }
         )
     })
 
-    let drawRating = function (rating) {
+    let drawRating = function (rating, id) {
         for (let i = 0; i < 5; i++) {
             if (i < rating) {
-                $('#ext_rating').append('<span class="active"></span>')
+                $('#' +id+' .ext_rating').append('<span class="active"></span>')
             }
             else {
-                $('#ext_rating').append('<span></span>')
+                $('#' +id+' .ext_rating').append('<span></span>')
             }
         }
     }

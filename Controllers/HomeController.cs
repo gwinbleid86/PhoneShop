@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 using PhoneShop.Models;
 
@@ -13,13 +14,18 @@ namespace PhoneShop.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IStringLocalizer<HomeController> _localizer;
+
+        public HomeController(ILogger<HomeController> logger, IStringLocalizer<HomeController> localizer)
         {
             _logger = logger;
+            _localizer = localizer;
         }
 
         public IActionResult Index()
         {
+            ViewData["Title"] = _localizer["Header"];
+            ViewData["Message"] = _localizer["Message"];
             return View();
         }
 

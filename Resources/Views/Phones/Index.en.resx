@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+    <data name="Header" xml:space="preserve">
+        <value>Mobile phones</value>
+    </data>
+    <data name="AddLink" xml:space="preserve">
+        <value>Add new Phone</value>
+    </data>
+</root>

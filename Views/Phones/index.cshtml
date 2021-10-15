@@ -1,10 +1,16 @@
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
 @model PhoneIndexViewModel
 
-@{ ViewBag.Title = "Мобильные телефоны";
-    Layout = "_Layout"; }
+@{
+    @*ViewBag.Title = "Мобильные телефоны";*@
+    Layout = "_Layout";
+    }
 
-<h2>@ViewBag.Title</h2>
-<a asp-action="Add" asp-controller="Phones">Добавить смартфон</a>
+@*<h2>@ViewBag.Title</h2>*@
+<h2>@Localizer["Header"]</h2>
+<a asp-action="Add" asp-controller="Phones">@Localizer["AddLink"]</a>
 <div class="table_section">
     @if (@Model.Phones.ToList().Count == 0)
     {
